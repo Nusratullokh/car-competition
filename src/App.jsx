@@ -1,85 +1,3 @@
-// import React, { useState } from 'react';
-// import { useGetCarsQuery, useAddCarMutation, useUpdateCarMutation, useDeleteCarMutation } from './api/api';
-// import './App.css';
-
-// function App() {
-//   const { data: cars, error, isLoading } = useGetCarsQuery();
-//   const [addCar] = useAddCarMutation();
-//   const [updateCar] = useUpdateCarMutation();
-//   const [deleteCar] = useDeleteCarMutation();
-
-//   const [newCar, setNewCar] = useState({ name: '', brand: '' });
-
-//   const handleAddCar = async () => {
-//     await addCar(newCar);
-//     setNewCar({ name: '', brand: '', year: '' });
-//   };
-
-//   const handleUpdateCar = async (id) => {
-//     await updateCar({ id, name: 'Updated Name' });
-//   };
-
-//   const handleDeleteCar = async (id) => {
-//     await deleteCar(id);
-//   };
-
-//   if (isLoading) return <div>Loading...</div>;
-//   if (error) return <div>Error occurred</div>;
-
-//   return (
-//     <div className="container">
-//       <h1>Cars</h1>
-//       <table>
-//         <thead>
-//           <tr>
-//             <th>Name</th>
-//             <th>Brand</th>
-//             <th>Year</th>
-//             <th className='action'>Actions</th>
-
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {cars.map((car) => (
-//             <tr key={car.id}>
-//               <td>{car.name}</td>
-//               <td>{car.brand}</td>
-//               <td>{car.year}</td>
-//               <td>
-//                 <button onClick={() => handleUpdateCar(car.id)}>Update</button>
-//                 <button onClick={() => handleDeleteCar(car.id)}>Delete</button>
-//               </td>
-//             </tr>
-//           ))}
-//         </tbody>
-//       </table>
-//       <div className="input-container">
-//         <input
-//           type="text"
-//           placeholder="Name"
-//           value={newCar.name}
-//           onChange={(e) => setNewCar({ ...newCar, name: e.target.value })}
-//         />
-//         <input
-//           type="text"
-//           placeholder="Brand"
-//           value={newCar.brand}
-//           onChange={(e) => setNewCar({ ...newCar, brand: e.target.value })}
-//         />
-//         <input
-//           type="number"
-//           placeholder="Year"
-//           value={newCar.year}
-//           onChange={(e) => setNewCar({ ...newCar, year: e.target.value })}
-//         />
-//         <button onClick={handleAddCar}>Add Car</button>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default App;
-
 import React, { useState } from 'react';
 import { useGetCarsQuery, useAddCarMutation, useUpdateCarMutation, useDeleteCarMutation } from './api/api';
 import './App.css';
@@ -97,8 +15,13 @@ function App() {
       alert('All fields are required!');
       return;
     }
+
+    // Automatically set the current time
+    const currentTime = new Date().toLocaleString();
+    const carWithTime = { ...newCar, time: currentTime };
+
     try {
-      await addCar(newCar);
+      await addCar(carWithTime);
       setNewCar({ name: '', brand: '', year: '' });
     } catch (error) {
       alert('Failed to add car');
@@ -133,7 +56,8 @@ function App() {
             <th>Name</th>
             <th>Brand</th>
             <th>Year</th>
-            <th className='action'>Actions</th>
+            <th className='time'>Time</th>
+            <th className="action">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -142,6 +66,7 @@ function App() {
               <td>{car.name}</td>
               <td>{car.brand}</td>
               <td>{car.year}</td>
+              <td>{car.time}</td>
               <td>
                 <button onClick={() => handleUpdateCar(car.id)}>Update</button>
                 <button onClick={() => handleDeleteCar(car.id)}>Delete</button>
